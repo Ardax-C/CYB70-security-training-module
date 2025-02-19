@@ -12,6 +12,11 @@ import {
   Grid,
   useTheme,
   Link,
+  useMediaQuery,
+  IconButton,
+  Collapse,
+  Fab,
+  ButtonBase,
 } from '@mui/material';
 import {
   Security,
@@ -19,8 +24,10 @@ import {
   Warning,
   School,
   Build,
+  ExpandMore,
+  ExpandLess,
+  Menu,
 } from '@mui/icons-material';
-import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -28,6 +35,9 @@ const Analysis = () => {
   const [markdown, setMarkdown] = useState('');
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [navExpanded, setNavExpanded] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
 
   const sections = [
     { icon: <Person />, title: 'Demographic Profile', id: 'demographic-profile' },
@@ -35,6 +45,7 @@ const Analysis = () => {
     { icon: <Security />, title: 'Implications for Corporate', id: 'implications-for-corporate' },
     { icon: <School />, title: 'Recommendations for Training', id: 'recommendations-for-training' },
     { icon: <Build />, title: 'Conclusion', id: 'conclusion' },
+    { icon: <Build />, title: 'References', id: 'references' },
   ];
 
   useEffect(() => {
@@ -49,8 +60,7 @@ const Analysis = () => {
         let processedText = text
           .replace(/\n{2,}/g, '\n\n')
           .replace(/^# (.+)$/m, '# $1\n')
-          .replace(/\*\*(.+?)\*\*/g, '__$1__')
-          .replace(/\[(\^[0-9]+)\]/g, ' [$1]');
+          .replace(/\*\*(.+?)\*\*/g, '__$1__');
 
         processedText = processedText
           .replace(/^## Demographic Profile/m, '## Demographic Profile {#demographic-profile}')
@@ -69,9 +79,7 @@ const Analysis = () => {
   }, []);
 
   const handleSectionClick = (sectionId) => {
-    console.log('Clicking section:', sectionId);
     const element = document.getElementById(sectionId);
-    console.log('Found element:', element);
     if (element) {
       const yOffset = -100;
       const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
@@ -79,23 +87,39 @@ const Analysis = () => {
     }
   };
 
+  const handleNavClose = () => {
+    setNavOpen(false);
+    setNavExpanded(false);
+  };
+
+  const handleFootnoteClick = (e, href) => {
+    e.preventDefault();
+    const targetId = href.slice(1); // Remove the # from the href
+    const element = document.getElementById(targetId);
+    if (element) {
+      const yOffset = -80; // Adjust for header height
+      const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
   const components = {
-    h1: ({children, ...props}) => (
+    h1: ({ children }) => (
       <Typography 
-        variant="h2" 
+        variant={isMobile ? "h4" : "h3"} 
         component="h1" 
         gutterBottom 
         sx={{ 
-          mb: 4,
+          mt: 2,
+          scrollMarginTop: '100px',
           color: theme.palette.primary.main,
           fontWeight: 'bold',
         }}
-        {...props}
       >
         {children}
       </Typography>
     ),
-    h2: ({children, ...props}) => {
+    h2: ({ children }) => {
       let id = '';
       let text = '';
       
@@ -112,95 +136,125 @@ const Analysis = () => {
         }
       }
 
-      console.log('Header text:', text, 'ID:', id);
-
       return (
         <Typography 
-          variant="h3" 
+          variant={isMobile ? "h5" : "h4"} 
           component="h2" 
-          id={id}
+          id={id} 
+          gutterBottom 
           sx={{ 
-            mt: 6, 
-            mb: 3,
+            mt: 4,
+            mb: 2,
+            scrollMarginTop: '100px',
             color: theme.palette.secondary.main,
             fontWeight: 'medium',
-            scrollMarginTop: '100px',
           }}
-          {...props}
         >
           {text}
         </Typography>
       );
     },
-    h3: ({children, ...props}) => (
+    h3: ({ children }) => (
       <Typography 
-        variant="h4" 
+        variant={isMobile ? "h6" : "h5"} 
         component="h3" 
-        sx={{ 
-          mt: 4, 
-          mb: 2,
-          color: theme.palette.text.primary,
-          fontWeight: 'medium',
-        }}
-        {...props}
+        gutterBottom 
+        sx={{ mt: 3 }}
       >
         {children}
       </Typography>
     ),
-    p: ({...props}) => {
-      const isIntroText = props.children?.[0]?.startsWith?.('Recent studies');
+    p: ({ children }) => {
+      const isIntroText = children?.[0]?.startsWith?.('Recent studies');
       
       return (
         <Typography 
+          variant="body1" 
           paragraph 
           sx={{ 
+            fontSize: isMobile ? '0.95rem' : '1rem',
             lineHeight: 1.8,
-            fontSize: '1.1rem',
-            color: isIntroText ? 'text.primary' : 'inherit',
+            overflowWrap: 'break-word',
+            wordWrap: 'break-word',
+            hyphens: 'auto',
+            color: isIntroText ? theme.palette.text.primary : 'inherit',
           }}
-          {...props}
-        />
+        >
+          {children}
+        </Typography>
       );
     },
-    strong: ({...props}) => (
+    strong: ({ children }) => (
       <Box 
         component="strong" 
         sx={{ 
           color: theme.palette.primary.main,
           fontWeight: 'bold',
         }} 
-        {...props}
-      />
+      >
+        {children}
+      </Box>
     ),
-    a: ({...props}) => (
-      <Link
-        {...props}
-        sx={{ 
-          color: theme.palette.primary.main,
-          textDecoration: 'none',
-          '&:hover': {
-            textDecoration: 'underline',
-          }
-        }}
-      />
-    ),
-    ol: ({...props}) => (
+    a: ({ href, children }) => {
+      if (href && /^#\d+$/.test(href)) {
+        return (
+          <ButtonBase
+            onClick={(e) => handleFootnoteClick(e, href)}
+            sx={{
+              background: 'none',
+              border: 'none',
+              padding: '0 2px',
+              color: theme.palette.primary.main,
+              cursor: 'pointer',
+              fontSize: '0.8em',
+              verticalAlign: 'super',
+              fontFamily: 'inherit',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}
+          >
+            {children}
+          </ButtonBase>
+        );
+      }
+
+      return (
+        <Link
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          sx={{
+            color: theme.palette.primary.main,
+            textDecoration: 'none',
+            wordBreak: 'break-all',
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          {children}
+        </Link>
+      );
+    },
+    ol: ({ children }) => (
       <List 
         component="ol"
         sx={{ 
           pl: 2,
-          listStyleType: 'decimal',
-          '& li': { 
+          '& li': {
             display: 'list-item',
-            pl: 0,
-            py: 0.5,
-          }
+            listStyleType: 'decimal',
+            pl: 1,
+            mb: 1,
+          },
         }}
-        {...props}
-      />
+      >
+        {children}
+      </List>
     ),
-    ul: ({...props}) => {
-      const isFootnotes = props.children?.some?.(child => 
+    ul: ({ children }) => {
+      const isFootnotes = children?.some?.(child => 
         child.props?.children?.[0]?.startsWith?.('https://')
       );
 
@@ -216,41 +270,32 @@ const Analysis = () => {
               py: 0.5,
             }
           }}
-          {...props}
-        />
+        >
+          {children}
+        </List>
       );
     },
-    li: ({ordered, ...props}) => {
-      const isFootnote = props.children?.[0]?.startsWith?.('https://');
-      
-      return (
-        <ListItem 
-          component="li"
-          sx={{ 
-            display: 'list-item',
-            listStyleType: isFootnote ? 'decimal' : 'disc',
-            pl: 0,
-            py: 0.5,
+    li: ({ children }) => (
+      <ListItem 
+        sx={{ 
+          display: 'list-item',
+          pl: 0,
+          py: 0.5,
+        }}
+      >
+        <Typography
+          variant="body1"
+          component="span"
+          sx={{
+            fontSize: isMobile ? '0.95rem' : '1rem',
+            lineHeight: 1.6,
           }}
         >
-          <Typography 
-            component="span" 
-            sx={{ 
-              display: 'inline',
-              '& a': {
-                color: theme.palette.primary.main,
-                textDecoration: 'none',
-                '&:hover': {
-                  textDecoration: 'underline',
-                }
-              }
-            }}
-            {...props}
-          />
-        </ListItem>
-      );
-    },
-    h4: ({children, ...props}) => {
+          {children}
+        </Typography>
+      </ListItem>
+    ),
+    h4: ({ children }) => {
       if (children === 'References' || children === 'Footnotes') {
         return (
           <Typography 
@@ -262,7 +307,6 @@ const Analysis = () => {
               color: theme.palette.secondary.main,
               fontWeight: 'medium',
             }}
-            {...props}
           >
             {children}
           </Typography>
@@ -278,131 +322,255 @@ const Analysis = () => {
             color: theme.palette.text.primary,
             fontWeight: 'medium',
           }}
-          {...props}
         >
           {children}
         </Typography>
       );
     },
+    table: ({ children }) => (
+      <Box sx={{ overflowX: 'auto', mb: 2 }}>
+        <table style={{ 
+          minWidth: isMobile ? '100%' : '600px',
+          borderCollapse: 'collapse',
+          width: '100%',
+        }}>
+          {children}
+        </table>
+      </Box>
+    ),
+    th: ({ children }) => (
+      <th style={{ 
+        padding: isMobile ? '8px 4px' : '12px 8px',
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        textAlign: 'left',
+        fontSize: isMobile ? '0.875rem' : '1rem',
+      }}>
+        {children}
+      </th>
+    ),
+    td: ({ children }) => (
+      <td style={{ 
+        padding: isMobile ? '8px 4px' : '12px 8px',
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        fontSize: isMobile ? '0.875rem' : '1rem',
+      }}>
+        {children}
+      </td>
+    ),
   };
 
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ my: 4 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <Box
-            sx={{
-              position: 'relative',
-              height: '300px',
-              width: '100%',
-              overflow: 'hidden',
-              borderRadius: 2,
-              mb: 4,
-            }}
-          >
-            <Box
-              component="img"
-              src="/images/security.jpg"
-              alt="Analysis"
-              sx={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                filter: 'brightness(0.7)',
-              }}
-            />
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                textAlign: 'center',
-                color: 'white',
-                width: '100%',
-                padding: 4,
-              }}
-            >
-              <Typography variant="h3" component="h1" gutterBottom>
-                Comprehensive Analysis
-              </Typography>
-              <Typography variant="h6">
-                In-depth research on cybersecurity threats affecting young adults
-              </Typography>
-            </Box>
-          </Box>
-        </motion.div>
-
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={3}>
-            <Paper 
-              elevation={3}
-              sx={{ 
-                p: 2, 
-                position: 'sticky', 
-                top: 100,
-                maxHeight: 'calc(100vh - 120px)',
-                overflowY: 'auto',
-                backgroundColor: theme.palette.mode === 'dark' 
-                  ? 'rgba(255, 255, 255, 0.05)' 
-                  : 'rgba(255, 255, 255, 0.95)',
-              }}
-            >
-              <Typography 
-                variant="h6" 
-                gutterBottom
-                sx={{ 
-                  color: theme.palette.primary.main,
-                  fontWeight: 'medium',
+    <Container maxWidth="xl">
+      <Box sx={{ py: 4 }}>
+        <Grid container spacing={3}>
+          {isMobile ? (
+            <>
+              <Paper
+                elevation={4}
+                sx={{
+                  display: navOpen ? 'block' : 'none',
+                  position: 'fixed',
+                  bottom: '80px',
+                  right: '20px',
+                  width: '85%',
+                  maxWidth: '300px',
+                  maxHeight: '60vh',
+                  overflowY: 'auto',
+                  zIndex: 1000,
+                  borderRadius: 2,
+                  backgroundColor: theme.palette.background.paper,
+                  border: `1px solid ${theme.palette.divider}`,
                 }}
               >
-                Quick Navigation
-              </Typography>
-              <List>
-                {sections.map((section, index) => (
-                  <ListItem 
-                    button 
-                    key={index}
-                    onClick={() => handleSectionClick(section.id)}
+                <Box sx={{ p: 2 }}>
+                  <Box
                     sx={{
-                      borderRadius: 1,
-                      mb: 0.5,
-                      '&:hover': {
-                        backgroundColor: theme.palette.action.hover,
-                      },
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      mb: 1,
                     }}
                   >
-                    <ListItemIcon sx={{ minWidth: 40 }}>
-                      {section.icon}
-                    </ListItemIcon>
-                    <ListItemText 
-                      primary={section.title}
-                      primaryTypographyProps={{
-                        fontSize: '0.9rem',
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        color: theme.palette.mode === 'dark' 
+                          ? theme.palette.primary.light 
+                          : theme.palette.primary.main,
                         fontWeight: 'medium',
                       }}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
-          </Grid>
+                    >
+                      Quick Navigation
+                    </Typography>
+                    <IconButton
+                      size="small"
+                      onClick={handleNavClose}
+                      sx={{ 
+                        color: theme.palette.mode === 'dark' 
+                          ? theme.palette.primary.light 
+                          : theme.palette.primary.main 
+                      }}
+                    >
+                      <ExpandLess />
+                    </IconButton>
+                  </Box>
+                  <List dense>
+                    {sections.map((section) => (
+                      <ButtonBase
+                        key={section.id}
+                        onClick={() => {
+                          handleSectionClick(section.id);
+                          handleNavClose();
+                        }}
+                        sx={{
+                          width: '100%',
+                          justifyContent: 'flex-start',
+                          padding: '8px 16px',
+                          borderRadius: 1,
+                          mb: 0.5,
+                          color: theme.palette.text.primary,
+                          '&:hover': {
+                            backgroundColor: theme.palette.mode === 'dark'
+                              ? 'rgba(255, 255, 255, 0.1)'
+                              : theme.palette.action.hover,
+                          },
+                        }}
+                      >
+                        <ListItemIcon 
+                          sx={{ 
+                            minWidth: 32,
+                            color: theme.palette.mode === 'dark'
+                              ? theme.palette.primary.light
+                              : theme.palette.primary.main,
+                          }}
+                        >
+                          {section.icon}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={section.title}
+                          primaryTypographyProps={{
+                            fontSize: '0.85rem',
+                            fontWeight: 'medium',
+                            color: 'inherit',
+                          }}
+                        />
+                      </ButtonBase>
+                    ))}
+                  </List>
+                </Box>
+              </Paper>
+
+              <Fab
+                color="primary"
+                aria-label="navigation"
+                onClick={() => setNavOpen(!navOpen)}
+                sx={{
+                  position: 'fixed',
+                  bottom: '20px',
+                  right: '20px',
+                  zIndex: 1000,
+                  bgcolor: theme.palette.mode === 'dark' 
+                    ? theme.palette.primary.light 
+                    : theme.palette.primary.main,
+                  '&:hover': {
+                    bgcolor: theme.palette.mode === 'dark'
+                      ? theme.palette.primary.main
+                      : theme.palette.primary.dark,
+                  },
+                }}
+              >
+                <Menu />
+              </Fab>
+            </>
+          ) : (
+            <Grid item md={3}>
+              <Paper 
+                elevation={3}
+                sx={{ 
+                  p: 3,
+                  position: 'sticky',
+                  top: '80px',
+                  maxHeight: 'calc(100vh - 100px)',
+                  overflowY: 'auto',
+                  zIndex: 1,
+                  mt: 8,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Typography 
+                    variant={isMobile ? "subtitle1" : "h6"} 
+                    gutterBottom={!isMobile}
+                    sx={{
+                      color: theme.palette.primary.main,
+                      fontWeight: 'medium',
+                    }}
+                  >
+                    Quick Navigation
+                  </Typography>
+                  {isMobile && (
+                    <IconButton 
+                      size="small" 
+                      onClick={() => setNavExpanded(!navExpanded)}
+                      sx={{ color: theme.palette.primary.main }}
+                    >
+                      {navExpanded ? <ExpandLess /> : <ExpandMore />}
+                    </IconButton>
+                  )}
+                </Box>
+                <Collapse in={!isMobile || navExpanded}>
+                  <List dense={isMobile}>
+                    {sections.map((section) => (
+                      <ButtonBase
+                        key={section.id}
+                        onClick={() => {
+                          handleSectionClick(section.id);
+                          if (isMobile) setNavExpanded(false);
+                        }}
+                        sx={{
+                          width: '100%',
+                          justifyContent: 'flex-start',
+                          padding: '8px 16px',
+                          borderRadius: 1,
+                          mb: 0.5,
+                          border: 'none',
+                          color: theme.palette.text.primary,
+                          '&:hover': {
+                            backgroundColor: theme.palette.action.hover,
+                          },
+                        }}
+                      >
+                        <ListItemIcon sx={{ minWidth: isMobile ? 32 : 40 }}>
+                          {section.icon}
+                        </ListItemIcon>
+                        <ListItemText 
+                          primary={section.title}
+                          primaryTypographyProps={{
+                            fontSize: isMobile ? '0.85rem' : '0.9rem',
+                            fontWeight: 'medium',
+                          }}
+                        />
+                      </ButtonBase>
+                    ))}
+                  </List>
+                </Collapse>
+              </Paper>
+            </Grid>
+          )}
           
           <Grid item xs={12} md={9}>
             <Paper 
               elevation={3}
               sx={{ 
-                p: 4,
+                p: isMobile ? 2 : 4,
                 backgroundColor: theme.palette.mode === 'dark' 
                   ? 'rgba(255, 255, 255, 0.05)' 
                   : 'rgba(255, 255, 255, 0.95)',
-                '& h2': {
-                  scrollMarginTop: '100px',
-                },
               }}
             >
               {loading ? (
@@ -413,14 +581,12 @@ const Analysis = () => {
                   <Skeleton width="80%" />
                 </Box>
               ) : (
-                <>
-                  <ReactMarkdown 
-                    remarkPlugins={[remarkGfm]} 
-                    components={components}
-                  >
-                    {markdown}
-                  </ReactMarkdown>
-                </>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={components}
+                  children={markdown}
+                  skipHtml
+                />
               )}
             </Paper>
           </Grid>

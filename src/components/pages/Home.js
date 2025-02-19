@@ -9,11 +9,16 @@ import {
   CardContent,
   CardActions,
   CardMedia,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const cards = [
     {
       title: 'Password Security',
@@ -40,7 +45,7 @@ const Home = () => {
       <Box
         sx={{
           position: 'relative',
-          height: '70vh',
+          height: isMobile ? '50vh' : '70vh',
           width: '100%',
           overflow: 'hidden',
         }}
@@ -65,7 +70,7 @@ const Home = () => {
             textAlign: 'center',
             color: 'white',
             width: '100%',
-            padding: 4,
+            padding: isMobile ? 2 : 4,
           }}
         >
           <motion.div
@@ -73,12 +78,18 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Typography variant="h2" component="h1" gutterBottom>
-              Protect Your Digital Future
+            <Typography 
+              variant={isMobile ? "h4" : "h2"} 
+              component="h1" 
+              gutterBottom
+            >
+              Cybersecurity for Youth
             </Typography>
-            <Typography variant="h5" paragraph sx={{ mb: 4 }}>
-              Learn about cybersecurity threats affecting teenagers and young adults,
-              and discover how to stay safe online.
+            <Typography 
+              variant={isMobile ? "body1" : "h5"}
+              sx={{ mb: 4 }}
+            >
+              Learn how to stay safe online and protect your digital life
             </Typography>
             <Button
               variant="contained"
@@ -112,36 +123,42 @@ const Home = () => {
         </Box>
       </Box>
 
-      <Container sx={{ my: 8 }}>
-        <Grid container spacing={4}>
+      <Container sx={{ py: 4 }}>
+        <Grid container spacing={3}>
           {cards.map((card, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid item xs={12} sm={6} md={4} key={index}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                <Card 
+                  sx={{ 
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column' 
+                  }}
+                >
                   <CardMedia
                     component="img"
-                    height="200"
+                    height="140"
                     image={card.image}
                     alt={card.title}
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="h5" component="h2" gutterBottom>
+                    <Typography gutterBottom variant="h5" component="h2">
                       {card.title}
                     </Typography>
-                    <Typography color="text.secondary">
+                    <Typography>
                       {card.description}
                     </Typography>
                   </CardContent>
                   <CardActions>
                     <Button 
                       size="small" 
-                      color="primary"
-                      component={Link}
+                      component={Link} 
                       to={card.link}
+                      sx={{ ml: 1, mb: 1 }}
                     >
                       Learn More
                     </Button>
