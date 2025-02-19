@@ -15,7 +15,7 @@ function App() {
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
       <CssBaseline />
-      <Router basename="/CYB70-security-training-module">
+      <Router>
         <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
         <MainContent />
       </Router>

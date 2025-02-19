@@ -18,7 +18,7 @@ const Home = () => {
     {
       title: 'Password Security',
       description: 'Only 34% of teens use unique passwords for all accounts. Learn how to protect your accounts.',
-      image: `${process.env.PUBLIC_URL}/images/anon_hacker.jpg`,
+      image: '/images/anon_hacker.jpg',
       link: '/recommendations',
     },
     {
