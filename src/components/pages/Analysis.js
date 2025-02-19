@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Container,
   Typography,
@@ -19,11 +19,12 @@ import {
   ButtonBase,
 } from '@mui/material';
 import {
-  Security,
   Person,
   Warning,
+  Business,
   School,
-  Build,
+  Flag,
+  MenuBook,
   ExpandMore,
   ExpandLess,
   Menu,
@@ -39,14 +40,14 @@ const Analysis = () => {
   const [navExpanded, setNavExpanded] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
 
-  const sections = [
+  const sections = useMemo(() => [
     { icon: <Person />, title: 'Demographic Profile', id: 'demographic-profile' },
     { icon: <Warning />, title: 'Key Vulnerabilities', id: 'key-vulnerabilities' },
-    { icon: <Security />, title: 'Implications for Corporate', id: 'implications-for-corporate' },
-    { icon: <School />, title: 'Recommendations for Training', id: 'recommendations-for-training' },
-    { icon: <Build />, title: 'Conclusion', id: 'conclusion' },
-    { icon: <Build />, title: 'References', id: 'references' },
-  ];
+    { icon: <Business />, title: 'Implications for Corporate', id: 'implications-corporate' },
+    { icon: <School />, title: 'Recommendations for Training', id: 'recommendations-training' },
+    { icon: <Flag />, title: 'Conclusion', id: 'conclusion' },
+    { icon: <MenuBook />, title: 'References', id: 'references' },
+  ], []);
 
   useEffect(() => {
     fetch(`${process.env.PUBLIC_URL}/resources/CyberThreats_Analysis.md`)
