@@ -75,7 +75,7 @@ The EU's 2024 Digital Education Action Plan mandates cybersecurity curricula acr
 
 ### Pedagogical Interventions
 
-- **Microcredentialing**: Badge systems rewarding teens for completing phishing simulations and security workshops, shown to increase engagement by 58% in CONCORDIA project trials.
+- **Microcredentialing**: Badge systems rewarding teens for completing phishing simulations and security workshops.
 - **Guardian Training Modules**: Parent-focused workshops on monitoring tools like Microsoft Family Safety, which reduce unauthorized app downloads by 37% when consistently used.
 - **Cyber Range Simulations**: Immersive cyberattack scenarios for vocational students, piloted in Italy's Avanzi labs with 91% efficacy in improving threat response times.
 
