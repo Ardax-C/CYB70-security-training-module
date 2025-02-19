@@ -92,11 +92,11 @@ The cybersecurity vulnerabilities of teenagers and young adults represent both a
 
 ## References
 
-1. https://thejournal.com/Articles/2024/07/24/Todays-K12-Cybersecurity-Threats-And-How-to-Combat-Them.aspx
-2. https://news.microsoft.com/de-at/cyber-signals-issue-8-education-under-siege-how-cybercriminals-target-our-schools/
-3. https://ecs-org.eu/super-cyber-kids/
-4. https://www.techradar.com/pro/security/schools-are-facing-greater-cybersecurity-threats-than-ever-before
-5. https://theconversation.com/why-federal-efforts-to-protect-schools-from-cybersecurity-threats-fall-short-216866
-6. https://ijdsaa.com/index.php/welcome/article/download/154/60
-7. https://www.acronis.com/en-us/blog/posts/internet-safety-for-teens/
-8. https://intpolicydigest.org/the-platform/teenagers-are-becoming-quite-the-cyber-delinquents/
+1. Elworthy, R. (2024, July 24). Today's K-12 cybersecurity threats and how to combat them. The Journal. https://thejournal.com/Articles/2024/07/24/Todays-K12-Cybersecurity-Threats-And-How-to-Combat-Them.aspx
+2. Microsoft. (2024, October 10). Cyber signals issue 8: Education under siege—How cybercriminals target our schools. Microsoft News. https://news.microsoft.com/de-at/cyber-signals-issue-8-education-under-siege-how-cybercriminals-target-our-schools/
+3. European Cyber Security Organisation. (2024, May 01). Super cyber kids. ECS-Org.eu. https://ecs-org.eu/super-cyber-kids/
+4. Jennings-Trace, E. (2024, December 10). Schools are facing greater cybersecurity threats than ever before. TechRadar. https://www.techradar.com/pro/security/schools-are-facing-greater-cybersecurity-threats-than-ever-before
+5. Ksherti, N. (2023, December 14). Why federal efforts to protect schools from cybersecurity threats fall short. The Conversation. https://theconversation.com/why-federal-efforts-to-protect-schools-from-cybersecurity-threats-fall-short-216866
+6. Parimalam, S., Kasmin, I. F., Zainal Abidin, Z. M. ., & Vasudavan, H. . (2023). Cybersecurity Awareness Among Teenagers and Children Using Self-Learning System . International Journal of Data Science and Advanced Analytics, 4, 131–138. https://doi.org/10.69511/ijdsaa.v4i0.154
+7. Acronis. (2023, August 18). Internet safety for teens: Tips for parents and educators. Acronis Blog. https://www.acronis.com/en-us/blog/posts/internet-safety-for-teens/
+8. Ugochukwu, H. (2023, August 8). Teenagers are becoming quite the cyber delinquents. International Policy Digest. https://intpolicydigest.org/the-platform/teenagers-are-becoming-quite-the-cyber-delinquents/
