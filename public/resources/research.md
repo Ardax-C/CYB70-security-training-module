@@ -20,7 +20,7 @@ These attacks exploit three institutional blind spots:
 While institutions grapple with external threats, teenagers face equally pernicious risks from within their digital communities. Cybercriminals increasingly weaponize adolescent social dynamics through:
 
 - **Gamified Phishing**: Threat actors like Moonstone Sleet deploy fake gaming apps (e.g., tank battle simulators) containing credential-stealing malware, leveraging teens’ trust in peer-recommended software[3].
-- **Social Media Manipulation**: Microsoft-named actor Storm-1877 targets minors through Instagram and TikTok scams promising cryptocurrency rewards, capitalizing on lower threat awareness compared to adult professionals[3].
+- **Social Media Manipulation**: Microsoft’s Storm-1877 group targets minors through Instagram and TikTok scams promising cryptocurrency rewards, capitalizing on lower threat awareness compared to adult professionals[3].
 - **Cyberbullying-as-a-Service**: Anonymous platforms enable harassment campaigns that 32% of European teens report experiencing, often leading to psychological trauma and reactive cybersecurity negligence[8].
 
 
