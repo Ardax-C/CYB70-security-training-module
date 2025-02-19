@@ -1,41 +1,116 @@
 import { createTheme } from '@mui/material';
 
+const baseTheme = {
+  typography: {
+    fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",
+    h1: {
+      fontWeight: 800,
+      letterSpacing: '-0.02em',
+    },
+    h2: {
+      fontWeight: 700,
+      letterSpacing: '-0.01em',
+    },
+    h3: {
+      fontWeight: 700,
+      letterSpacing: '-0.01em',
+    },
+    button: {
+      textTransform: 'none',
+      fontWeight: 600,
+    },
+  },
+  shape: {
+    borderRadius: 12,
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          padding: '10px 24px',
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+        },
+      },
+    },
+  },
+};
+
 export const lightTheme = createTheme({
+  ...baseTheme,
   palette: {
     mode: 'light',
     primary: {
-      main: '#2196f3',
-      light: '#64b5f6',
-      dark: '#1976d2',
+      main: '#7C3AED', // Vibrant purple
+      light: '#9F67FF',
+      dark: '#5B21B6',
     },
     secondary: {
-      main: '#f50057',
-      light: '#ff4081',
-      dark: '#c51162',
+      main: '#10B981', // Modern teal
+      light: '#34D399',
+      dark: '#059669',
     },
     background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
+      default: '#F9FAFB',
+      paper: '#FFFFFF',
+    },
+    success: {
+      main: '#10B981',
+    },
+    error: {
+      main: '#EF4444',
+    },
+    warning: {
+      main: '#F59E0B',
+    },
+    info: {
+      main: '#3B82F6',
     },
   },
 });
 
 export const darkTheme = createTheme({
+  ...baseTheme,
   palette: {
     mode: 'dark',
     primary: {
-      main: '#90caf9',
-      light: '#e3f2fd',
-      dark: '#42a5f5',
+      main: '#8B5CF6', // Softer purple for dark mode
+      light: '#A78BFA',
+      dark: '#6D28D9',
     },
     secondary: {
-      main: '#f48fb1',
-      light: '#fce4ec',
-      dark: '#f06292',
+      main: '#34D399', // Brighter teal for dark mode
+      light: '#6EE7B7',
+      dark: '#059669',
     },
     background: {
-      default: '#121212',
-      paper: '#1e1e1e',
+      default: '#111827',
+      paper: '#1F2937',
+    },
+    success: {
+      main: '#34D399',
+    },
+    error: {
+      main: '#F87171',
+    },
+    warning: {
+      main: '#FBBF24',
+    },
+    info: {
+      main: '#60A5FA',
     },
   },
 }); 

@@ -48,6 +48,7 @@ const Home = () => {
           height: isMobile ? '50vh' : '70vh',
           width: '100%',
           overflow: 'hidden',
+          mt: -8,
         }}
       >
         <Box
@@ -91,34 +92,44 @@ const Home = () => {
             >
               Learn how to stay safe online and protect your digital life
             </Typography>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              component={Link}
-              to="/threats"
-              sx={{ mr: 2 }}
-            >
-              Explore Threats
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              size="large"
-              component={Link}
-              to="/recommendations"
-              sx={{ 
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap' }}>
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                component={Link}
+                to="/threats"
+              >
+                Explore Threats
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                component={Link}
+                to="/security-game"
+              >
+                Play Security Game
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                component={Link}
+                to="/recommendations"
+                sx={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   borderColor: 'white',
-                }
-              }}
-            >
-              Safety Tips
-            </Button>
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderColor: 'white',
+                  }
+                }}
+              >
+                Safety Tips
+              </Button>
+            </Box>
           </motion.div>
         </Box>
       </Box>
