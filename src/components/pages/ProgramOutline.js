@@ -37,7 +37,6 @@ const ProgramOutline = () => {
     { icon: <Schedule />, title: 'Engagement Strategy', id: 'engagement-strategy' },
     { icon: <Assessment />, title: 'Assessment', id: 'assessment' },
     { icon: <Timeline />, title: 'Timeline', id: 'timeline' },
-    { icon: <Flag />, title: 'Conclusion', id: 'conclusion' },
   ], []);
 
   useEffect(() => {
