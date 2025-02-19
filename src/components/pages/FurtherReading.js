@@ -14,7 +14,6 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  Link as LinkIcon,
   School,
   Article,
   Psychology,

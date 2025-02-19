@@ -26,7 +26,6 @@ import remarkGfm from 'remark-gfm';
 
 const Analysis = () => {
   const [markdown, setMarkdown] = useState('');
-  const [references, setReferences] = useState([]);
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
 
@@ -56,13 +55,6 @@ const Analysis = () => {
           .replace(/^## Conclusion/m, '## Conclusion {#conclusion}');
 
         setMarkdown(processedText);
-        
-        const refRegex = /\[(\^[0-9]+)\]:\s*(http[^\n]+)/g;
-        const refs = [...text.matchAll(refRegex)].map(match => ({
-          id: match[1],
-          url: match[2].trim()
-        }));
-        setReferences(refs);
         setLoading(false);
       });
   }, []);
