@@ -47,7 +47,7 @@ const Home = () => {
       >
         <Box
           component="img"
-          src="/images/security.jpg"
+          src={`${process.env.PUBLIC_URL}/images/security.jpg`}
           alt="Cybersecurity"
           sx={{
             width: '100%',

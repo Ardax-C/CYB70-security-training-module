@@ -28,7 +28,7 @@ const FurtherReading = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch('/resources/Further_Reading.md')
+    fetch(`${process.env.PUBLIC_URL}/resources/further-reading.md`)
       .then(response => response.text())
       .then(text => {
         const linkArray = text.split('\n')
@@ -39,6 +39,10 @@ const FurtherReading = () => {
             domain: new URL(url).hostname.replace('www.', '')
           }));
         setLinks(linkArray);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error loading further reading:', error);
         setLoading(false);
       });
   }, []);

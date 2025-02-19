@@ -38,8 +38,13 @@ const Analysis = () => {
   ];
 
   useEffect(() => {
-    fetch('/resources/CyberThreats_Analysis.md')
-      .then(response => response.text())
+    fetch(`${process.env.PUBLIC_URL}/resources/CyberThreats_Analysis.md`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+      })
       .then(text => {
         let processedText = text
           .replace(/\n{2,}/g, '\n\n')
@@ -55,6 +60,10 @@ const Analysis = () => {
           .replace(/^## Conclusion/m, '## Conclusion {#conclusion}');
 
         setMarkdown(processedText);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error loading analysis:', error);
         setLoading(false);
       });
   }, []);
