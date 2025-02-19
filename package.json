@@ -1,6 +1,7 @@
 {
   "name": "cyber-security-awareness",
   "version": "0.1.0",
+  "homepage": "https://ardax-c.github.io/CYB70-security-training-module",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
