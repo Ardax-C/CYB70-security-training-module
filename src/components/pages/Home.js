@@ -18,19 +18,19 @@ const Home = () => {
     {
       title: 'Password Security',
       description: 'Only 34% of teens use unique passwords for all accounts. Learn how to protect your accounts.',
-      image: '/images/anon_hacker.jpg',
+      image: `${process.env.PUBLIC_URL}/images/anon_hacker.jpg`,
       link: '/recommendations',
     },
     {
       title: 'Social Media Safety',
       description: 'Discover how to protect your privacy while staying connected with friends.',
-      image: '/images/two_children_on_phones.jpg',
+      image: `${process.env.PUBLIC_URL}/images/two_children_on_phones.jpg`,
       link: '/recommendations',
     },
     {
       title: 'Online Gaming Risks',
       description: 'Learn about the risks of downloading unofficial game mods and how to stay safe while gaming.',
-      image: '/images/computer_linux_desktop_view.jpg',
+      image: `${process.env.PUBLIC_URL}/images/computer_linux_desktop_view.jpg`,
       link: '/threats',
     },
   ];

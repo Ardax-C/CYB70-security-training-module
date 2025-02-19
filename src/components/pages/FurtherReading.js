@@ -28,16 +28,30 @@ const FurtherReading = () => {
   const theme = useTheme();
 
   useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/resources/further-reading.md`)
-      .then(response => response.text())
+    fetch(`${process.env.PUBLIC_URL}/resources/Further_Reading.md`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+      })
       .then(text => {
         const linkArray = text.split('\n')
           .filter(line => line.trim().length > 0)
-          .map(url => ({
-            url: url.trim(),
-            type: categorizeLink(url),
-            domain: new URL(url).hostname.replace('www.', '')
-          }));
+          .map(line => {
+            const url = line.trim();
+            try {
+              return {
+                url,
+                type: categorizeLink(url),
+                domain: new URL(url).hostname.replace('www.', '')
+              };
+            } catch (error) {
+              console.warn(`Invalid URL: ${url}`);
+              return null;
+            }
+          })
+          .filter(Boolean); // Remove any null entries
         setLinks(linkArray);
         setLoading(false);
       })
@@ -95,7 +109,7 @@ const FurtherReading = () => {
           >
             <Box
               component="img"
-              src="/images/security.jpg"
+              src={`${process.env.PUBLIC_URL}/images/security.jpg`}
               alt="Further Reading"
               sx={{
                 width: '100%',
