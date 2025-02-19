@@ -41,10 +41,10 @@ const Analysis = () => {
   const [navOpen, setNavOpen] = useState(false);
 
   const sections = useMemo(() => [
-    { icon: <Person />, title: 'Demographic Profile', id: 'demographic-profile' },
-    { icon: <Warning />, title: 'Key Vulnerabilities', id: 'key-vulnerabilities' },
-    { icon: <Business />, title: 'Implications for Corporate', id: 'implications-corporate' },
-    { icon: <School />, title: 'Recommendations for Training', id: 'recommendations-training' },
+    { icon: <Person />, title: 'Cybersecurity Threats', id: 'demographic-profile' },
+    { icon: <Warning />, title: 'The Expanding Threat', id: 'key-vulnerabilities' },
+    { icon: <Business />, title: 'Socio-Technical Vulnerabilities', id: 'implications-corporate' },
+    { icon: <School />, title: 'Regional Case Studies', id: 'recommendations-training' },
     { icon: <Flag />, title: 'Conclusion', id: 'conclusion' },
     { icon: <MenuBook />, title: 'References', id: 'references' },
   ], []);
@@ -64,11 +64,12 @@ const Analysis = () => {
           .replace(/\*\*(.+?)\*\*/g, '__$1__');
 
         processedText = processedText
-          .replace(/^## Demographic Profile/m, '## Demographic Profile {#demographic-profile}')
-          .replace(/^## Key Vulnerabilities/m, '## Key Vulnerabilities {#key-vulnerabilities}')
-          .replace(/^## Implications for Corporate/m, '## Implications for Corporate {#implications-for-corporate}')
-          .replace(/^## Recommendations for Training/m, '## Recommendations for Training {#recommendations-for-training}')
-          .replace(/^## Conclusion/m, '## Conclusion {#conclusion}');
+          .replace(/^## Cybersecurity Threats/m, '## Cybersecurity Threats {#demographic-profile}')
+          .replace(/^## The Expanding Threat/m, '## The Expanding Threat {#key-vulnerabilities}')
+          .replace(/^## Socio-Technical Vulnerabilities/m, '## Socio-Technical Vulnerabilities {#implications-corporate}')
+          .replace(/^## Regional Case Studies/m, '## Regional Case Studies {#recommendations-training}')
+          .replace(/^## Conclusion/m, '## Conclusion {#conclusion}')
+          .replace(/^## References/m, '## References {#references}');
 
         setMarkdown(processedText);
         setLoading(false);
