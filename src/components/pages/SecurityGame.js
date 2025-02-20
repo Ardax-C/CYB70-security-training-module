@@ -627,11 +627,12 @@ const SecurityGame = () => {
                   textAlign: 'center',
                   cursor: 'pointer',
                   width: 100,
-                  backgroundColor: 'background.paper',
-                  '&:hover': { backgroundColor: 'action.hover' },
+                  backgroundColor: ransomwareState.filesEncrypted ? 'error.main' : 'background.paper',
+                  color: ransomwareState.filesEncrypted ? 'white' : 'inherit',
+                  '&:hover': { backgroundColor: ransomwareState.filesEncrypted ? 'error.dark' : 'action.hover' },
                 }}
               >
-                <Folder sx={{ fontSize: 40, color: 'primary.main' }} />
+                <Folder sx={{ fontSize: 40, color: ransomwareState.filesEncrypted ? 'white' : 'primary.main' }} />
                 <Typography variant="body2">{folder.name}</Typography>
               </Paper>
             ))}
@@ -672,6 +673,103 @@ const SecurityGame = () => {
           }}
         >
           {renderEmailClient()}
+        </Box>
+      )}
+
+      {/* Infection Warning */}
+      {ransomwareState.infected && !ransomwareState.filesEncrypted && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1001,
+          }}
+        >
+          <motion.div
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, 180, 360],
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            <ErrorOutline sx={{ fontSize: 60, color: 'error.main' }} />
+          </motion.div>
+          <Typography variant="h6" color="error" sx={{ mt: 2 }}>
+            Malware detected! Your system is being infected...
+          </Typography>
+        </Box>
+      )}
+
+      {/* Ransomware Demand */}
+      {ransomwareState.showDemand && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1002,
+          }}
+        >
+          <Paper 
+            elevation={24}
+            sx={{ 
+              p: 3, 
+              backgroundColor: 'error.main',
+              color: 'white',
+              textAlign: 'center',
+              maxWidth: '80%',
+            }}
+          >
+            <MonetizationOn sx={{ fontSize: 60, mb: 2 }} />
+            <Typography variant="h5" gutterBottom>
+              RANSOMWARE DEMAND
+            </Typography>
+            <Typography paragraph>
+              Your files have been encrypted. To recover them, you must pay 2 Bitcoin within 24 hours.
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              Time remaining: {ransomwareState.timeLeft} hours
+            </Typography>
+            <Box sx={{ mt: 3 }}>
+              <Button
+                variant="contained"
+                sx={{ 
+                  backgroundColor: 'white',
+                  color: 'error.main',
+                  '&:hover': {
+                    backgroundColor: 'grey.100',
+                  }
+                }}
+                onClick={() => {
+                  setRansomwareState({
+                    infected: false,
+                    filesEncrypted: false,
+                    showDemand: false,
+                    timeLeft: 24,
+                    encryptedFiles: [],
+                    desktopView: 'desktop',
+                    selectedEmail: null,
+                  });
+                }}
+              >
+                Reset Simulation
+              </Button>
+            </Box>
+          </Paper>
         </Box>
       )}
     </Box>
@@ -885,75 +983,7 @@ const SecurityGame = () => {
         </Typography>
         <Paper elevation={3} sx={{ p: 4, maxWidth: 1200, mx: 'auto' }}>
           {!ransomwareState.infected ? (
-            <Box sx={{ 
-              height: '70vh',
-              backgroundColor: theme.palette.mode === 'dark' ? 'grey.900' : 'grey.100',
-              borderRadius: 2,
-              p: 2,
-              position: 'relative',
-              overflow: 'hidden',
-            }}>
-              <Grid container spacing={2}>
-                {/* Desktop Icons */}
-                <Grid item xs={12}>
-                  <Box sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-                    {mockFiles.map((folder) => (
-                      <Paper
-                        key={folder.name}
-                        elevation={2}
-                        sx={{
-                          p: 1,
-                          textAlign: 'center',
-                          cursor: 'pointer',
-                          width: 100,
-                          backgroundColor: 'background.paper',
-                          '&:hover': { backgroundColor: 'action.hover' },
-                        }}
-                      >
-                        <Folder sx={{ fontSize: 40, color: 'primary.main' }} />
-                        <Typography variant="body2">{folder.name}</Typography>
-                      </Paper>
-                    ))}
-                    <Paper
-                      elevation={2}
-                      sx={{
-                        p: 1,
-                        textAlign: 'center',
-                        cursor: 'pointer',
-                        width: 100,
-                        backgroundColor: 'background.paper',
-                        '&:hover': { backgroundColor: 'action.hover' },
-                      }}
-                      onClick={() => setRansomwareState(prev => ({ ...prev, desktopView: 'email' }))}
-                    >
-                      <Email sx={{ fontSize: 40, color: 'secondary.main' }} />
-                      <Typography variant="body2">Email</Typography>
-                    </Paper>
-                  </Box>
-                </Grid>
-              </Grid>
-
-              {/* Email Client Window */}
-              {(ransomwareState.desktopView === 'email' || ransomwareState.desktopView === 'emailOpen') && (
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    p: 2,
-                    zIndex: 1000,
-                  }}
-                >
-                  {renderEmailClient()}
-                </Box>
-              )}
-            </Box>
+            renderDesktop()
           ) : (
             <Box>
               {ransomwareState.filesEncrypted ? (
