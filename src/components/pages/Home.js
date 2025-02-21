@@ -147,7 +147,8 @@ const Home = () => {
                   sx={{ 
                     height: '100%',
                     display: 'flex',
-                    flexDirection: 'column' 
+                    flexDirection: 'column',
+                    minHeight: 360,
                   }}
                 >
                   <CardMedia
@@ -155,21 +156,26 @@ const Home = () => {
                     height="140"
                     image={card.image}
                     alt={card.title}
+                    sx={{ objectFit: 'cover' }}
                   />
-                  <CardContent sx={{ flexGrow: 1 }}>
+                  <CardContent sx={{ 
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start'
+                  }}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {card.title}
                     </Typography>
-                    <Typography>
+                    <Typography variant="body2">
                       {card.description}
                     </Typography>
                   </CardContent>
-                  <CardActions>
+                  <CardActions sx={{ p: 2 }}>
                     <Button 
                       size="small" 
                       component={Link} 
                       to={card.link}
-                      sx={{ ml: 1, mb: 1 }}
                     >
                       Learn More
                     </Button>
