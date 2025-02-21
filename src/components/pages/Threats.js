@@ -15,13 +15,13 @@ const Threats = () => {
   const threats = [
     {
       title: 'Weak Authentication',
-      description: '82% of teens use fewer than five passwords for all online activities. This makes accounts vulnerable to credential-stuffing attacks.',
+      description: '52% of teens use fewer than five passwords for all online activities. This makes accounts vulnerable to credential-stuffing attacks.',
       stats: 'Only 12% utilize password managers',
       image: '/images/anon_hacker.jpg',
     },
     {
       title: 'Social Engineering',
-      description: '48% of teens click links from unknown senders, and 31% provide credentials to fraudulent sites.',
+      description: '46% of teens click links from unknown senders, and a significant number provide credentials to fraudulent sites.',
       stats: 'Increasing cases of peer impersonation attacks',
       image: '/images/hacking_group_anon.jpg',
     },
