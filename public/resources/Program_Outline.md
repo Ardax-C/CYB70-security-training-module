@@ -8,9 +8,9 @@ This comprehensive cybersecurity training program targets teenagers and young ad
 
 ### Key Findings from Demographic Analysis
 
-- 82% use fewer than five passwords across all accounts
+- 52% use fewer than five passwords across all accounts
 - Only 20% consistently enable two-factor authentication
-- 48% click links from unknown senders
+- 46% click links from unknown senders
 - 90% regularly connect to unsecured public Wi-Fi
 - 60% download unofficial apps and game modifications
 
